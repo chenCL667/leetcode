@@ -1,0 +1,68 @@
+/**
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+int min(int a,int b){
+    if(a>b) return b;
+    return a;
+}
+int* spiralOrder(int** matrix, int matrixRowSize, int matrixColSize) {
+    int count=min(matrixRowSize,matrixColSize)/2;
+    int k=0,j=0,t=0;
+    int *newData=(int)malloc(sizeof(int)*(matrixRowSize*matrixColSize));
+    
+    if(count==0){
+        for(int i=0;i<matrixRowSize;i++){
+            for(int j=0;j<matrixColSize;j++)
+                newData[k++]=matrix[i][j];
+        }
+         return newData;
+    }
+    
+    
+    for(int i=0;i<count;i++){
+        //从左往右
+        for(j=i;j<matrixColSize-i;j++){
+            newData[k]=matrix[i][j];
+            k++;
+        }
+        
+        //从上往下
+        for(t=i+1;t<matrixRowSize-i;t++){
+            newData[k]=matrix[t][j-1];
+            k++;
+        }
+        
+        //从右往左
+        for(j=j-2;j>=i;j--){
+            newData[k]=matrix[t-1][j];
+            k++;
+        }
+        
+        //从下往上
+        for(t=t-2;t>i;t--){
+            newData[k]=matrix[t][j+1];
+            k++;
+        }
+    }
+    if(min(matrixRowSize,matrixColSize)==matrixColSize &&min(matrixRowSize,matrixColSize)%2){
+        for(t=t+1;t<matrixRowSize-count;t++)
+        {
+            newData[k]=matrix[t][j+2];
+            k++;
+        }
+    }
+    
+    else if(min(matrixRowSize,matrixColSize)==matrixRowSize &&min(matrixRowSize,matrixColSize)%2){
+        for(j=j+2;j<matrixColSize-count;j++)
+        {
+            newData[k]=matrix[t+1][j];
+            k++;
+        }
+    }
+    
+    
+    
+    return newData;
+}
+//runtime:56 ms
+//memory:N/A
